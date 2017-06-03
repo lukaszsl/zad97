@@ -1,3 +1,5 @@
+var MAX_POINTS = 10;
+
 // new game button
 var newGameBtn = document.getElementById('js-newGameButton');
 
@@ -13,8 +15,7 @@ pickPaper.addEventListener('click', function() { playerPick('paper') });
 pickScissors.addEventListener('click', function() { playerPick('scissors') });
 
 //initial values
-var gameState = 'notStarted',  //started // ended
-	player = {
+var player = {
 		name: '',
 		score: 0
 	},
@@ -27,7 +28,7 @@ var newGameElem = document.getElementById('js-newGameElement'),
 	pickElem = document.getElementById('js-playerPickElement'),
 	resultsElem = document.getElementById('js-resultsTableElement');
 
-function setGameElements() {
+function setGameElements(gameState) {
 	switch(gameState) {
 		case 'started':
 			newGameElem.style.display = 'none';
@@ -44,7 +45,7 @@ function setGameElements() {
 	}
 }
 
-setGameElements();
+setGameElements('notStarted');
 
 // begining of the game
 var playerPointsElem = document.getElementById('js-playerPoints'),
@@ -56,13 +57,11 @@ function newGame() {
 	
 	if (player.name) {
 		player.score = computer.score = 0;
-		gameState = 'started';
-		setGameElements();
-
-		playerNameElem.innerHTML = Player.name;
 		setGamePoints();
-	}
+		setGameElements('started');
 
+		playerNameElem.innerHTML = player.name;
+	}
 }
 
 //player choice
@@ -107,14 +106,28 @@ function checkRoundWinner(playerPick, computerPick) {
 
 	if (winnerIs == 'player') {
 		playerResultElem.innerHTML = "Win!";
-		player.score ++;
+		player.score++;
 	} else if (winnerIs == 'computer') {
 		computerResultElem.innerHTML = "Win!";
 		computer.score++;
 	}
+	setGamePoints(); 
+	endGame();
 }
 
 function setGamePoints() {
     playerPointsElem.innerHTML = player.score;
     computerPointsElem.innerHTML = computer.score;
+    console.log('function setGamePoints\n' + 'player: ' + playerPointsElem.innerHTML + 'computer: ' + computerPointsElem.innerHTML); //test
+}
+
+function endGame() {
+	if (player.score == MAX_POINTS || computer.score == MAX_POINTS) {
+		setGameElements('ended');
+		if (player.score == MAX_POINTS) {
+			alert('The winner is ' + player.name.toUpperCase() + '\nYou get ' + player.score + ' points!');
+		} else if (computer.score == MAX_POINTS) {
+			alert('The winner is COMPUTER!' + '\nNot this time :-( \nComputer colected ' + computer.score + ' points first.');
+		}
+	}
 }
