@@ -59,7 +59,7 @@ function newGame() {
 		gameState = 'started';
 		setGameElements();
 
-		playerNameElem.innerHTML = player.name;
+		playerNameElem.innerHTML = Player.name;
 		setGamePoints();
 	}
 
@@ -96,7 +96,7 @@ function checkRoundWinner(playerPick, computerPick) {
 	var winnerIs = 'player';
 
 	if (playerPick == computerPick) {
-		winnerIs = 'noone'; // remis
+		winnerIs = 'noone'; // draw
 	} else if (
 		(computerPick == 'rock' &&  playerPick == 'scissors') ||
 		(computerPick == 'scissors' &&  playerPick == 'paper') ||
@@ -107,7 +107,7 @@ function checkRoundWinner(playerPick, computerPick) {
 
 	if (winnerIs == 'player') {
 		playerResultElem.innerHTML = "Win!";
-		player.score += 1;
+		player.score ++;
 	} else if (winnerIs == 'computer') {
 		computerResultElem.innerHTML = "Win!";
 		computer.score++;
